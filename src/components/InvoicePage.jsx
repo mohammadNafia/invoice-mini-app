@@ -219,11 +219,13 @@ export default function InvoicePage() {
       success: (res) => {
         my.showLoading({ content: 'Processing payment...' });
         
+        // Exact structure as requested: Authorization: token (no Bearer)
+        // and using data.url in tradePay
         fetch('https://its.mouamle.space/api/payment', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': token
           },
           body: JSON.stringify({ qrCode: res.code })
         })
@@ -231,37 +233,27 @@ export default function InvoicePage() {
         .then(data => {
           my.hideLoading();
           
-          if (data.paymentUrl) {
+          if (data.url) {
             my.tradePay({
-              paymentUrl: data.paymentUrl,
+              paymentUrl: data.url,
               success: (payRes) => {
-                my.alert({
-                  title: "Payment Success",
-                  content: JSON.stringify(payRes),
-                });
+                my.alert({ content: "Payment successful" });
               },
               fail: (payErr) => {
-                my.alert({
-                  title: "Payment Failed",
-                  content: JSON.stringify(payErr),
-                });
+                my.alert({ content: "Payment failed" });
               },
             });
           } else {
-            my.alert({ 
-              title: "Server Response",
-              content: 'Missing paymentUrl. Response: ' + JSON.stringify(data) 
-            });
+            my.alert({ content: "Payment failed: Link generation error" });
           }
         })
         .catch(err => {
           my.hideLoading();
-          console.error("Payment error:", err);
-          my.alert({ content: 'System error during payment' });
+          my.alert({ content: "Payment failed" });
         });
       },
       fail: (err) => {
-        my.alert({ content: 'Scan failed or cancelled' });
+        my.alert({ content: 'Scan failed' });
       }
     });
   };
