@@ -103,7 +103,7 @@ export default function Hero() {
                 <div className="flex items-center flex-col lg:flex-row">
                   <div className="flex items-center -space-x-3">
                     <img
-                      src="https://pagedone.io/asset/uploads/1694846673.png"
+                      src="https://media.licdn.com/dms/image/v2/D4E03AQFVQPDv9X143w/profile-displayphoto-shrink_200_200/B4EZcolBWzHsAc-/0/1748732485486?e=2147483647&v=beta&t=JS4I_Yt89VOA4OCzkUNvUVxFf7GKuLr2sEsKJlXq59A"
                       alt="Rounded"
                       className="border-2 border-solid border-[#E2E8F0] rounded-full w-12 h-12 object-cover"
                     />
