@@ -17,6 +17,14 @@ export default function InvoiceHistory() {
   }, []);
 
   const downloadInvoicePDF = (url) => {
+    if (!url) {
+      if (typeof my !== 'undefined') {
+        my.alert({ content: "No PDF URL found for this invoice." });
+      } else {
+        alert("No PDF URL found for this invoice.");
+      }
+      return;
+    }
     if (typeof my !== 'undefined') {
       my.downloadFile({
         url,
