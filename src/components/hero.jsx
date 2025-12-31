@@ -1,54 +1,41 @@
 import React from "react";
 
 export default function Hero() {
-  const handleLogin = () => {
-    my.getAuthCode({
-      scopes: ["auth_base", "USER_ID"],
-      success: (res) => {
-        my.alert({
-          content: "Auth Code: " + res.authCode,
-        });
+ const handleLogin = () => {
+  my.getAuthCode({
+    scopes: ["auth_base", "USER_ID"],
 
-        fetch("https://its.mouamle.space/api/auth-with-superQi", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            authCode: res.authCode,
-          }),
+    success: (res) => {
+      fetch("https://its.mouamle.space/api/auth-with-superQi", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: res.authCode, // Changed from 'code' to 'res.authCode' to fix reference error
+        }),
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          if (!data.token) {
+            my.alert({ content: "Login failed" });
+            return;
+          }
+
+          localStorage.setItem("user_token", data.token);
+          my.alert({ content: "Login successful" });
         })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Success:", data);
-            
-            // Correctly save the token to localStorage
-            if (data.token) {
-              localStorage.setItem('user_token', data.token);
-            }
-
-            my.alert({
-              title: "Login Successful",
-              content: "Token: " + (data.token || JSON.stringify(data)),
-            });
-          })
-          .catch((err) => {
-            console.error("Fetch error:", err);
-            my.alert({
-              title: "Fetch Error",
-              content: "Failed to connect to server: " + err.message,
-            });
-          });
-      },
-      fail: (err) => {
-        console.log("Login failed", err);
-        my.alert({
-          title: "Login Failed",
-          content: "Could not get auth code: " + (err.error || "Unknown error"),
+        .catch(() => {
+          my.alert({ content: "Server error" });
         });
-      },
-    });
-  };
+    },
+
+    fail: () => {
+      my.alert({ content: "Authorization cancelled" });
+    },
+  });
+};
+
 
   return (
     <header className="bg-[#F8FAFC] text-[#334155]">

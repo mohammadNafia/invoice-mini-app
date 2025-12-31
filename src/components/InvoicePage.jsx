@@ -205,56 +205,56 @@ export default function InvoicePage() {
     const tax = Number(invoice.tax) || 0;
     return { subtotal, tax, total: subtotal + tax };
   }, [invoice.items, invoice.tax]);
+const handelpayment = () => {
+  const token = localStorage.getItem("user_token");
 
-  const handelpayment = () => {
-    const token = localStorage.getItem('user_token');
-    
-    if (!token || token === "undefined") {
-      my.alert({ content: 'Please login first' });
-      return;
-    }
+  if (!token) {
+    my.alert({ content: "Please login first" });
+    return;
+  }
 
-    my.scan({
-      type: 'qr',
-      success: (res) => {
-        my.showLoading({ content: 'Processing payment...' });
-        
-        fetch('https://its.mouamle.space/api/payment', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          },
-          body: JSON.stringify({ qrCode: res.code })
-        })
-        .then(response => response.json())
-        .then(data => {
-          my.hideLoading();
-          
-          if (data.url) {
-            my.tradePay({
-              paymentUrl: data.url,
-              success: (payRes) => {
-                my.alert({ content: "Payment successful" });
-              },
-              fail: (payErr) => {
-                my.alert({ content: "Payment failed" });
-              },
-            });
-          } else {
-            my.alert({ content: "Payment failed. Response: " + JSON.stringify(data) });
+  my.scan({
+    type: "qr",
+
+    success: (res) => {
+      fetch("https://its.mouamle.space/api/payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          qrCode: res.code,
+        }),
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          if (!data.url) {
+            my.alert({ content: "Payment failed" });
+            return;
           }
+
+          my.tradePay({
+            paymentUrl: data.url,
+            success: () => {
+              my.alert({ content: "Payment successful" });
+            },
+            fail: () => {
+              my.alert({ content: "Payment failed" });
+            },
+          });
         })
-        .catch(err => {
-          my.hideLoading();
-          my.alert({ content: "Payment failed" });
+        .catch(() => {
+          my.alert({ content: "Payment error" });
         });
-      },
-      fail: (err) => {
-        my.alert({ content: 'Scan failed' });
-      }
-    });
-  };
+    },
+
+    fail: () => {
+      my.alert({ content: "Scan cancelled" });
+    },
+  });
+};
+
 
   const handleInvoiceChange = (field, value) => {
     setInvoice((prev) => ({ ...prev, [field]: value }));
