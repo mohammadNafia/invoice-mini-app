@@ -234,9 +234,23 @@ const handelpayment = () => {
             return;
           }
 
+          const saveInvoiceSession = (invoiceData) => {
+            const old = JSON.parse(sessionStorage.getItem("invoices")) || [];
+            old.push(invoiceData);
+            sessionStorage.setItem("invoices", JSON.stringify(old));
+          };
+
           my.tradePay({
             paymentUrl: data.url,
             success: () => {
+              saveInvoiceSession({
+                invoice: "INV-" + Date.now(),
+                paymentStatus: "Paid",
+                totalAmount: totals.total,
+                paymentMethod: payment.method,
+                createdAt: new Date().toISOString(),
+                pdfUrl: "https://example.com/invoice.pdf" 
+              });
               my.alert({ content: "Payment successful" });
             },
             fail: () => {
@@ -253,6 +267,30 @@ const handelpayment = () => {
       my.alert({ content: "Scan cancelled" });
     },
   });
+  function saveInvoiceSession(invoice) {
+  const old =
+    JSON.parse(sessionStorage.getItem("invoices")) || [];
+
+  old.push(invoice);
+
+  sessionStorage.setItem(
+    "invoices",
+    JSON.stringify(old)
+  );
+}
+success: () => {
+  saveInvoiceSession({
+    id: "INV-" + Date.now(),
+    status: "Paid",
+    amount: totals.total,
+    method: payment.method,
+    createdAt: new Date().toISOString(),
+    pdfUrl: "https://example.com/invoice.pdf" // مؤقت
+  });
+
+  my.alert({ content: "Payment successful" });
+}
+
 };
 
 
@@ -291,6 +329,17 @@ const handelpayment = () => {
       items: prev.items.filter((_, idx) => idx !== index),
     }));
   };
+function saveInvoiceSession(invoice) {
+  const old =
+    JSON.parse(sessionStorage.getItem("invoices")) || [];
+
+  old.push(invoice);
+
+  sessionStorage.setItem(
+    "invoices",
+    JSON.stringify(old)
+  );
+}
 
   const handlePaymentSubmit = (event) => {
     event.preventDefault();
