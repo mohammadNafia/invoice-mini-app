@@ -16,29 +16,29 @@ export default function InvoiceHistory() {
     return () => window.removeEventListener("invoice-updated", loadInvoices);
   }, []);
 
-  function downloadInvoicePDF(url) {
-  my.downloadFile({
-    url,
-
-    success: ({ apFilePath }) => {
-      my.saveFile({
-        apFilePath,
-
-        success: () => {
-          my.alert({ content: "File saved on your device" });
+  const downloadInvoicePDF = (url) => {
+    if (typeof my !== 'undefined') {
+      my.downloadFile({
+        url,
+        success: ({ apFilePath }) => {
+          my.saveFile({
+            apFilePath,
+            success: () => {
+              my.alert({ content: "File saved on your device" });
+            },
+            fail: () => {
+              my.alert({ content: "File save failed" });
+            },
+          });
         },
-
         fail: () => {
-          my.alert({ content: "File save failed" });
+          my.alert({ content: "File download failed" });
         },
       });
-    },
-
-    fail: () => {
-      my.alert({ content: "File download failed" });
-    },
-  });
-}
+    } else {
+      console.log("Download URL:", url);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
@@ -57,12 +57,14 @@ export default function InvoiceHistory() {
             <tbody className="divide-y divide-[#E2E8F0]">
               {invoices.map((invoice) => (
                 <tr key={invoice.invoice} className="hover:bg-[#F1F5F9] transition-colors">
-                  <td className="px-6 py-4 font-medium text-[#0F172A]"><button
-  onClick={() =>
-    downloadInvoicePDF("https://example.com/invoice.pdf")
-  }
->{invoice.invoice} Download Invoice</button>
-</td>
+                  <td className="px-6 py-4 font-medium text-[#0F172A]">
+                    <button
+                      onClick={() => downloadInvoicePDF("https://example.com/invoice.pdf")}
+                      className="text-[#0F766E] hover:underline"
+                    >
+                      {invoice.invoice}
+                    </button>
+                  </td>
                   <td className="px-6 py-4">
                     <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
                       invoice.paymentStatus === 'Paid' ? 'bg-green-100 text-green-700' : 
@@ -79,18 +81,20 @@ export default function InvoiceHistory() {
                 </tr>
               ))}
             </tbody>
-            <tfoot className="bg-[#F1F5F9] font-bold">
-              <tr>
-                <td colSpan={3} className="px-6 py-4 rounded-bl-xl text-[#0F172A]">Total</td>
-                <td className="px-6 py-4 text-right rounded-br-xl text-[#0F766E] font-bold text-lg">
-                  ${invoices.reduce((sum, inv) => sum + (Number(inv.totalAmount) || 0), 0).toFixed(2)}
-                </td>
-              </tr>
-            </tfoot>
+            {invoices.length > 0 && (
+              <tfoot className="bg-[#F1F5F9] font-bold">
+                <tr>
+                  <td colSpan={3} className="px-6 py-4 rounded-bl-xl text-[#0F172A]">Total</td>
+                  <td className="px-6 py-4 text-right rounded-br-xl text-[#0F766E] font-bold text-lg">
+                    ${invoices.reduce((sum, inv) => sum + (Number(inv.totalAmount) || 0), 0).toFixed(2)}
+                  </td>
+                </tr>
+              </tfoot>
+            )}
           </table>
         </div>
         <p className="mt-4 text-sm text-[#334155] italic">A list of your recent invoices.</p>
       </div>
     </div>
-  )
+  );
 }
