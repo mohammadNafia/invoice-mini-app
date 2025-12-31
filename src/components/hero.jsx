@@ -6,13 +6,14 @@ export default function Hero() {
     scopes: ["auth_base", "USER_ID"],
 
     success: (res) => {
+      const code = res.authCode;
       fetch("https://its.mouamle.space/api/auth-with-superQi", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: res.authCode, // Changed from 'code' to 'res.authCode' to fix reference error
+          token: code,
         }),
       })
         .then((r) => r.json())
