@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import InvoicePage from "./components/InvoicePage/InvoicePage.jsx";
+import InvoicePage from "./components/InvoicePage.jsx";
 import Hero from "./components/hero.jsx";
 import InvoiceHistory from "./components/invoicehistory.jsx";
 function App() {
