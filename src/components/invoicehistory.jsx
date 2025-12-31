@@ -66,7 +66,7 @@ export default function InvoiceHistory() {
                 <tr key={invoice.invoice} className="hover:bg-[#F1F5F9] transition-colors">
                   <td className="px-6 py-4 font-medium text-[#0F172A]">
                     <button
-                      onClick={() => downloadInvoicePDF("https://example.com/invoice.pdf")}
+                    onClick={() => downloadInvoicePDF(invoice.pdfUrl)}
                       className="text-[#0F766E] hover:underline"
                     >
                       {invoice.invoice}
