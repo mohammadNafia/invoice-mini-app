@@ -48,7 +48,7 @@ export default function InvoicePage() {
                   totalAmount: totals.total,
                   paymentMethod: payment.method,
                   createdAt: new Date().toISOString(),
-                  pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", // Placeholder URL
+                  pdfUrl: "https://www.canva.com/design/DAG9Ho5hk00/Q2gsvMDLAm0NtzCyMmA_jg/edit?utm_content=DAG9Ho5hk00&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton", // Placeholder URL
                 });
                 sessionStorage.setItem("invoices", JSON.stringify(invoices));
                 window.dispatchEvent(new Event("invoice-updated"));
