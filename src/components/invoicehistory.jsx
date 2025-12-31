@@ -12,21 +12,34 @@ export default function InvoiceHistory() {
 
     loadInvoices();
 
-    // Listen for updates from other components
     window.addEventListener("invoice-updated", loadInvoices);
     return () => window.removeEventListener("invoice-updated", loadInvoices);
   }, []);
 
-  const downloadPdf = (url) => {
-    my.downloadFile({
-      url,
-      success: (res) => {
-        my.saveFile({
-          tempFilePath: res.tempFilePath,
-        });
-      },
-    });
-  };
+  function downloadInvoicePDF(url) {
+  my.downloadFile({
+    url,
+
+    success: ({ apFilePath }) => {
+      my.saveFile({
+        apFilePath,
+
+        success: () => {
+          my.alert({ content: "File saved on your device" });
+        },
+
+        fail: () => {
+          my.alert({ content: "File save failed" });
+        },
+      });
+    },
+
+    fail: () => {
+      my.alert({ content: "File download failed" });
+    },
+  });
+}
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
       <div className="rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] p-8 shadow-sm">
@@ -44,7 +57,12 @@ export default function InvoiceHistory() {
             <tbody className="divide-y divide-[#E2E8F0]">
               {invoices.map((invoice) => (
                 <tr key={invoice.invoice} className="hover:bg-[#F1F5F9] transition-colors">
-                  <td className="px-6 py-4 font-medium text-[#0F172A]">{invoice.invoice}</td>
+                  <td className="px-6 py-4 font-medium text-[#0F172A]"><button
+  onClick={() =>
+    downloadInvoicePDF("https://example.com/invoice.pdf")
+  }
+>{invoice.invoice} Download Invoice</button>
+</td>
                   <td className="px-6 py-4">
                     <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
                       invoice.paymentStatus === 'Paid' ? 'bg-green-100 text-green-700' : 
