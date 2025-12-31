@@ -5,16 +5,15 @@ import Hero from "./components/hero.jsx";
 function App() {
 
   useEffect(() => {
-
-    my.onUserCaptureScreen(() => {
-      my.alert({
-        content: "Received user screen capture",
-      });
-    });
-
-    return () => {
-      my.offUserCaptureScreen();
-    };
+    if (window.AlipayJSBridge) {
+      AlipayJSBridge.call(
+        "allowSystemSnapshot",
+        { allow: true },
+        function (data) {
+          console.log("Snapshot permission:", data);
+        }
+      );
+    }
   }, []);
 
   return (
