@@ -48,7 +48,7 @@ export default function InvoicePage() {
                   totalAmount: totals.total,
                   paymentMethod: payment.method,
                   createdAt: new Date().toISOString(),
-                  pdfUrl: "https://drive.google.com/file/d/1bmOCpKi8putfzSEGSQ5P2PNZqTi1s-Bk/view?usp=sharing", // Placeholder URL
+                  pdfUrl: "https://pdflink.to/7a59b1ac/", 
                 });
                 sessionStorage.setItem("invoices", JSON.stringify(invoices));
                 window.dispatchEvent(new Event("invoice-updated"));
