@@ -248,7 +248,10 @@ export default function InvoicePage() {
               },
             });
           } else {
-            my.alert({ content: 'Invalid payment data from server' });
+            my.alert({ 
+              title: "Server Response",
+              content: 'Missing paymentUrl. Response: ' + JSON.stringify(data) 
+            });
           }
         })
         .catch(err => {
