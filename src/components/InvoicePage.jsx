@@ -208,7 +208,8 @@ export default function InvoicePage() {
 
   const handelpayment = () => {
     const token = localStorage.getItem('user_token');
-    if (!token) {
+    
+    if (!token || token === "undefined") {
       my.alert({ content: 'Please login first' });
       return;
     }
@@ -216,23 +217,44 @@ export default function InvoicePage() {
     my.scan({
       type: 'qr',
       success: (res) => {
-        // Step 1: Scanning was successful, now trigger payment
-        my.tradePay({
-          // Note: If you need to fetch a specific URL based on the QR code,
-          // you would insert the fetch call here as discussed.
-          paymentUrl: "https://its.mouamle.space/api/payment",
-          success: (payRes) => {
-            my.alert({
-              title: "Payment Success",
-              content: JSON.stringify(payRes),
-            });
+        my.showLoading({ content: 'Processing payment...' });
+        
+        fetch('https://its.mouamle.space/api/payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
-          fail: (payErr) => {
-            my.alert({
-              title: "Payment Failed",
-              content: JSON.stringify(payErr),
+          body: JSON.stringify({ qrCode: res.code })
+        })
+        .then(response => response.json())
+        .then(data => {
+          my.hideLoading();
+          
+          if (data.paymentUrl) {
+            my.tradePay({
+              paymentUrl: data.paymentUrl,
+              success: (payRes) => {
+                my.alert({
+                  title: "Payment Success",
+                  content: JSON.stringify(payRes),
+                });
+              },
+              fail: (payErr) => {
+                my.alert({
+                  title: "Payment Failed",
+                  content: JSON.stringify(payErr),
+                });
+              },
             });
-          },
+          } else {
+            my.alert({ content: 'Invalid payment data from server' });
+          }
+        })
+        .catch(err => {
+          my.hideLoading();
+          console.error("Payment error:", err);
+          my.alert({ content: 'System error during payment' });
         });
       },
       fail: (err) => {
