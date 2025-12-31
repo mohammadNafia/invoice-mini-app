@@ -48,7 +48,7 @@ export default function InvoicePage() {
                   totalAmount: totals.total,
                   paymentMethod: payment.method,
                   createdAt: new Date().toISOString(),
-                  pdfUrl: "https://pdflink.to/7a59b1ac/", 
+                  pdfUrl: "https://raw.githubusercontent.com/mohammadNafia/pdf-viewer1-/main/invoice.pdf", 
                 });
                 sessionStorage.setItem("invoices", JSON.stringify(invoices));
                 window.dispatchEvent(new Event("invoice-updated"));
