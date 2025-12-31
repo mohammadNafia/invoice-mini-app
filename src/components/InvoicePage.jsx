@@ -207,20 +207,37 @@ export default function InvoicePage() {
   }, [invoice.items, invoice.tax]);
 
   const handelpayment = () => {
-    // Note: scan logic from Page object was removed as it's not applicable in this React context.
-    // If you need scanning, you can call my.scan independently.
-    my.tradePay({
-      paymentUrl: "https://its.mouamle.space/api/payment",
+    const token = localStorage.getItem('user_token');
+    if (!token) {
+      my.alert({ content: 'Please login first' });
+      return;
+    }
+
+    my.scan({
+      type: 'qr',
       success: (res) => {
-        my.alert({
-          content: JSON.stringify(res),
+        // Step 1: Scanning was successful, now trigger payment
+        my.tradePay({
+          // Note: If you need to fetch a specific URL based on the QR code,
+          // you would insert the fetch call here as discussed.
+          paymentUrl: "https://its.mouamle.space/api/payment",
+          success: (payRes) => {
+            my.alert({
+              title: "Payment Success",
+              content: JSON.stringify(payRes),
+            });
+          },
+          fail: (payErr) => {
+            my.alert({
+              title: "Payment Failed",
+              content: JSON.stringify(payErr),
+            });
+          },
         });
       },
-      fail: (res) => {
-        my.alert({
-          content: JSON.stringify(res),
-        });
-      },
+      fail: (err) => {
+        my.alert({ content: 'Scan failed or cancelled' });
+      }
     });
   };
 

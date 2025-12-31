@@ -21,6 +21,12 @@ export default function Hero() {
           .then((response) => response.json())
           .then((data) => {
             console.log("Success:", data);
+            
+            // Correctly save the token to localStorage
+            if (data.token) {
+              localStorage.setItem('user_token', data.token);
+            }
+
             my.alert({
               title: "Login Successful",
               content: "Token: " + (data.token || JSON.stringify(data)),
