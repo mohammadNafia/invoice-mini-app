@@ -26,17 +26,24 @@ export default function InvoiceHistory() {
             success: () => {
               my.alert({ content: "File saved on your device" });
             },
-            fail: () => {
-              my.alert({ content: "File save failed" });
+            fail: (res) => {
+              my.alert({ 
+                title: "Save Failed",
+                content: res.errorMessage || res.error || "Unknown error" 
+              });
             },
           });
         },
-        fail: () => {
-          my.alert({ content: "File download failed" });
+        fail: (res) => {
+          my.alert({ 
+            title: "Download Failed",
+            content: res.errorMessage || res.error || "Unknown error" 
+          });
         },
       });
     } else {
       console.log("Download URL:", url);
+      alert("Downloads are only supported within the mini-app environment.");
     }
   };
 
