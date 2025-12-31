@@ -4,14 +4,17 @@ export default function InvoiceHistory() {
   const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
-    const stored =
-      JSON.parse(sessionStorage.getItem("invoices")) || [];
+    const loadInvoices = () => {
+      const stored = JSON.parse(sessionStorage.getItem("invoices")) || [];
+      stored.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setInvoices(stored);
+    };
 
-    stored.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    );
+    loadInvoices();
 
-    setInvoices(stored);
+    // Listen for updates from other components
+    window.addEventListener("invoice-updated", loadInvoices);
+    return () => window.removeEventListener("invoice-updated", loadInvoices);
   }, []);
 
   const downloadPdf = (url) => {
@@ -52,14 +55,18 @@ export default function InvoiceHistory() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-[#334155]">{invoice.paymentMethod}</td>
-                  <td className="px-6 py-4 text-right font-semibold text-[#0F172A]">{invoice.totalAmount}</td>
+                  <td className="px-6 py-4 text-right font-semibold text-[#0F172A]">
+                    ${Number(invoice.totalAmount).toFixed(2)}
+                  </td>
                 </tr>
               ))}
             </tbody>
             <tfoot className="bg-[#F1F5F9] font-bold">
               <tr>
                 <td colSpan={3} className="px-6 py-4 rounded-bl-xl text-[#0F172A]">Total</td>
-                <td className="px-6 py-4 text-right rounded-br-xl text-[#0F766E] font-bold text-lg">$2,500.00</td>
+                <td className="px-6 py-4 text-right rounded-br-xl text-[#0F766E] font-bold text-lg">
+                  ${invoices.reduce((sum, inv) => sum + (Number(inv.totalAmount) || 0), 0).toFixed(2)}
+                </td>
               </tr>
             </tfoot>
           </table>

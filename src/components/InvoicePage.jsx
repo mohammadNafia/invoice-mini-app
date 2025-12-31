@@ -238,6 +238,8 @@ const handelpayment = () => {
             const old = JSON.parse(sessionStorage.getItem("invoices")) || [];
             old.push(invoiceData);
             sessionStorage.setItem("invoices", JSON.stringify(old));
+            // Trigger history update across components
+            window.dispatchEvent(new Event("invoice-updated"));
           };
 
           my.tradePay({
@@ -249,48 +251,24 @@ const handelpayment = () => {
                 totalAmount: totals.total,
                 paymentMethod: payment.method,
                 createdAt: new Date().toISOString(),
-                pdfUrl: "https://example.com/invoice.pdf" 
+                pdfUrl: "https://example.com/invoice.pdf"
               });
-              my.alert({ content: "Payment successful" });
+              my.alert({ content: "Payment done" });
             },
             fail: () => {
-              my.alert({ content: "Payment failed" });
+              my.alert({ content: "Payment not completed" });
             },
           });
         })
         .catch(() => {
-          my.alert({ content: "Payment error" });
+          my.alert({ content: " error in the operation" });
         });
     },
 
     fail: () => {
-      my.alert({ content: "Scan cancelled" });
+      my.alert({ content: "Scan not completed" });
     },
   });
-  function saveInvoiceSession(invoice) {
-  const old =
-    JSON.parse(sessionStorage.getItem("invoices")) || [];
-
-  old.push(invoice);
-
-  sessionStorage.setItem(
-    "invoices",
-    JSON.stringify(old)
-  );
-}
-success: () => {
-  saveInvoiceSession({
-    id: "INV-" + Date.now(),
-    status: "Paid",
-    amount: totals.total,
-    method: payment.method,
-    createdAt: new Date().toISOString(),
-    pdfUrl: "https://example.com/invoice.pdf" // مؤقت
-  });
-
-  my.alert({ content: "Payment successful" });
-}
-
 };
 
 
@@ -329,17 +307,7 @@ success: () => {
       items: prev.items.filter((_, idx) => idx !== index),
     }));
   };
-function saveInvoiceSession(invoice) {
-  const old =
-    JSON.parse(sessionStorage.getItem("invoices")) || [];
 
-  old.push(invoice);
-
-  sessionStorage.setItem(
-    "invoices",
-    JSON.stringify(old)
-  );
-}
 
   const handlePaymentSubmit = (event) => {
     event.preventDefault();
