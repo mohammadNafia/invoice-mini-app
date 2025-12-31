@@ -101,19 +101,20 @@ export default function Hero() {
                 </div>
 
                 <div className="flex items-center flex-col lg:flex-row">
-                  <div className="flex items-center -space-x-3">
+                  <div className="flex items-center -space-x-5">
+                   
+                    <img
+                      src="https://media.licdn.com/dms/image/v2/D4D03AQEulL3Wl9zpZQ/profile-displayphoto-scale_200_200/B4DZsNh73nHkAY-/0/1765458559331?e=2147483647&v=beta&t=0VHg5AqPsYEUfCncBGfrzgXtjoHw-Uz5xGbRBgvMScs"
+                      alt="Rounded"
+                      className="border-2 border-solid border-[#E2E8F0] rounded-full w-12 h-12 object-cover"
+                    />
+                    <img
+                      src="https://media.licdn.com/dms/image/v2/D5603AQEfDnEAj5PwDA/profile-displayphoto-shrink_200_200/B56ZZ9ikZXHAAc-/0/1745862940793?e=2147483647&v=beta&t=Cap73kEh6PbiK4a2G2hLl7MVJqPMoRFtq_Qddox_MPE"
+                      alt="Rounded"
+                      className="border-2 border-solid border-[#E2E8F0] rounded-full w-12 h-12 object-cover"
+                    /> 
                     <img
                       src="https://media.licdn.com/dms/image/v2/D4E03AQFVQPDv9X143w/profile-displayphoto-shrink_200_200/B4EZcolBWzHsAc-/0/1748732485486?e=2147483647&v=beta&t=JS4I_Yt89VOA4OCzkUNvUVxFf7GKuLr2sEsKJlXq59A"
-                      alt="Rounded"
-                      className="border-2 border-solid border-[#E2E8F0] rounded-full w-12 h-12 object-cover"
-                    />
-                    <img
-                      src="https://pagedone.io/asset/uploads/1694846691.png"
-                      alt="Rounded"
-                      className="border-2 border-solid border-[#E2E8F0] rounded-full w-12 h-12 object-cover"
-                    />
-                    <img
-                      src="https://pagedone.io/asset/uploads/1694846704.png"
                       alt="Rounded"
                       className="border-2 border-solid border-[#E2E8F0] rounded-full w-12 h-12 object-cover"
                     />
