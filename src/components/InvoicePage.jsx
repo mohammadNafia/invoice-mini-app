@@ -52,14 +52,14 @@ export default function InvoicePage() {
                 });
                 sessionStorage.setItem("invoices", JSON.stringify(invoices));
                 window.dispatchEvent(new Event("invoice-updated"));
-                my.alert({ content: "Payment successful" });
+                my.alert({ content: "Payment done" });
               },
-              fail: () => my.alert({ content: "Payment cancelled" }),
+              fail: () => my.alert({ content: "Payment not completed" }),
             });
           })
           .catch(() => my.alert({ content: "Network error" }));
       },
-      fail: () => my.alert({ content: "Scan cancelled" }),
+      fail: () => my.alert({ content: "Scan not completed" }),
     });
   };
 
