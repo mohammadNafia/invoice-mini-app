@@ -9,12 +9,17 @@ function App() {
       AlipayJSBridge.call(
         "allowSystemSnapshot",
         { allow: true },
-        function (data) {
-          console.log("Snapshot permission:", data);
+        function (data) {{alert(JSON.stringify(data));} ;
         }
       );
-    }
+    } 
   }, []);
+
+
+
+
+
+
 
   return (
     <>
