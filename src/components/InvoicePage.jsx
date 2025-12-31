@@ -219,8 +219,6 @@ export default function InvoicePage() {
       success: (res) => {
         my.showLoading({ content: 'Processing payment...' });
         
-        // Exact structure as requested: Authorization: token (no Bearer)
-        // and using data.url in tradePay
         fetch('https://its.mouamle.space/api/payment', {
           method: 'POST',
           headers: {
@@ -244,7 +242,7 @@ export default function InvoicePage() {
               },
             });
           } else {
-            my.alert({ content: "Payment failed: Link generation error" });
+            my.alert({ content: "Payment failed. Response: " + JSON.stringify(data) });
           }
         })
         .catch(err => {
