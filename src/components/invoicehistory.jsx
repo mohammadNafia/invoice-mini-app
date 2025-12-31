@@ -15,45 +15,32 @@ export default function InvoiceHistory() {
     window.addEventListener("invoice-updated", loadInvoices);
     return () => window.removeEventListener("invoice-updated", loadInvoices);
   }, []);
+const downloadInvoicePDF = (url) => {
+  if (!url) {
+    my.alert({ content: "No PDF URL found for this invoice." });
+    return;
+  }
 
-  const downloadInvoicePDF = (url) => {
-    if (!url) {
-      if (typeof my !== 'undefined') {
-        my.alert({ content: "No PDF URL found for this invoice." });
-      } else {
-        alert("No PDF URL found for this invoice.");
-      }
-      return;
-    }
-    if (typeof my !== 'undefined') {
-      my.downloadFile({
-        url,
-        success: ({ apFilePath }) => {
-          my.saveFile({
-            apFilePath,
-            success: () => {
-              my.alert({ content: "File saved on your device" });
-            },
-            fail: (res) => {
-              my.alert({ 
-                title: "Save Failed",
-                content: res.errorMessage || res.error || "Unknown error" 
-              });
-            },
-          });
+  my.downloadFile({
+    url,
+    success: ({ apFilePath }) => {
+      my.openDocument({
+        filePath: apFilePath,
+        fileType: "pdf",
+        success: () => {
+          my.alert({ content: "Invoice opened" });
         },
-        fail: (res) => {
-          my.alert({ 
-            title: "Download Failed",
-            content: res.errorMessage || res.error || "Unknown error" 
-          });
+        fail: () => {
+          my.alert({ content: "Cannot open invoice file" });
         },
       });
-    } else {
-      console.log("Download URL:", url);
-      alert("Downloads are only supported within the mini-app environment.");
-    }
-  };
+    },
+    fail: () => {
+      my.alert({ content: "Download failed" });
+    },
+  });
+};
+
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
