@@ -1,36 +1,22 @@
+import { useEffect } from "react";
 import InvoicePage from "./components/InvoicePage.jsx";
 import Hero from "./components/hero.jsx";
+
 function App() {
-  const handelCaptureScreen = () => {
-  Page({
-  data: {
-    condition: false,
-  },
-  onReady() {
+
+  useEffect(() => {
+
     my.onUserCaptureScreen(() => {
       my.alert({
-        content: 'Received user screen capture',
+        content: "Received user screen capture",
       });
     });
-  },
-  offUserCaptureScreen() {
-    my.offUserCaptureScreen();
-    this.setData({
-      condition: false,
-    });
-  },
-  onUserCaptureScreen() {
-    my.onUserCaptureScreen(() => {
-      my.alert({
-        content: 'Received user screen capture'
-      });
-    });
-    this.setData({
-      condition: true,
-    });
-  },
-});
-  }
+
+    return () => {
+      my.offUserCaptureScreen();
+    };
+  }, []);
+
   return (
     <>
       <Hero />
