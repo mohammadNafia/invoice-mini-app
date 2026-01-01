@@ -61,7 +61,6 @@ export default function InvoicePage() {
                 invoices.push({
                   invoice: invoice.number,
                   totalAmount: totals.total,
-                  paymentMethod: payment.method,
                   createdAt: new Date().toISOString(),
                   pdfUrl:
                     "https://raw.githubusercontent.com/mohammadNafia/pdf-viewer1-/main/invoice2.pdf",
