@@ -41,6 +41,15 @@ export default function InvoicePage() {
   const handlePay = () => {
     const token = localStorage.getItem("user_token");
     if (!token) return my.alert({ content: "Please login first" });
+
+    if (!invoice.number || invoice.number.trim() === "") {
+      my.alert({ content: "Please enter an invoice name" });
+      return;
+    }
+
+    const invoiceName = invoice.number.trim();
+    const invoiceTotal = totals.total;
+
     my.scan({
       type: "qr",
       success: (res) => {
@@ -59,8 +68,8 @@ export default function InvoicePage() {
                   sessionStorage.getItem("invoices") || "[]"
                 );
                 invoices.push({
-                  invoice: invoice.number,
-                  totalAmount: totals.total,
+                  invoice: invoiceName,
+                  totalAmount: invoiceTotal,
                   createdAt: new Date().toISOString(),
                   pdfUrl:
                     "https://raw.githubusercontent.com/mohammadNafia/pdf-viewer1-/main/invoice2.pdf",
