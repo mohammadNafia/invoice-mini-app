@@ -127,7 +127,7 @@ export default function Hero() {
 
               <div className="xl:col-span-7 lg:col-span-6">
                 <img
-                  src="/Screenshot 2025-12-31 185024.png"
+                  src="/Screenshot 2026-01-01 214934.png"
                   alt="Dashboard"
                   className="rounded-l-3xl object-cover w-full lg:h-auto"
                 />
