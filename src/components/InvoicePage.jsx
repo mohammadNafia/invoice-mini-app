@@ -64,13 +64,12 @@ export default function InvoicePage() {
                   sessionStorage.getItem("invoices") || "[]"
                 );
                 invoices.push({
-                  invoice: "INV-" + Date.now(),
-                  paymentStatus: "Paid",
+                  invoice: invoice.number,
                   totalAmount: totals.total,
                   paymentMethod: payment.method,
                   createdAt: new Date().toISOString(),
                   pdfUrl:
-                    "https://raw.githubusercontent.com/mohammadNafia/pdf-viewer1-/main/invoice.pdf",
+                    "https://raw.githubusercontent.com/mohammadNafia/pdf-viewer1-/main/invoice2.pdf",
                 });
                 sessionStorage.setItem("invoices", JSON.stringify(invoices));
                 window.dispatchEvent(new Event("invoice-updated"));

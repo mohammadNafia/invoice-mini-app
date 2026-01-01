@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import InvoicePage from "./components/InvoicePage.jsx";
 import Hero from "./components/hero.jsx";
 import InvoiceHistory from "./components/invoicehistory.jsx";
