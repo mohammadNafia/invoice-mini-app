@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 const initialInvoice = {
-  number: "1",
+  number: "",
   created: "January 1, 2026",
   due: "February 1, 2026",
   logoUrl:
@@ -67,6 +67,7 @@ export default function InvoicePage() {
                 });
                 sessionStorage.setItem("invoices", JSON.stringify(invoices));
                 window.dispatchEvent(new Event("invoice-updated"));
+                setInvoice(initialInvoice);
                 my.alert({ content: "Payment done" });
               },
               fail: () => my.alert({ content: "Payment not completed" }),
