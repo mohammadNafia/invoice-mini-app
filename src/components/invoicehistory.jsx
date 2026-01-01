@@ -52,7 +52,7 @@ export default function InvoiceHistory() {
             <thead className="bg-[#E2E8F0] text-[#334155] font-semibold">
               <tr>
                 <th className="px-6 py-4 rounded-tl-xl">Invoice</th>
-                <th className="px-6 py-4">Method</th>
+                <th className="px-6 py-4">Download</th>
                 <th className="px-6 py-4 text-right rounded-tr-xl">Amount</th>
               </tr>
             </thead>
@@ -63,15 +63,15 @@ export default function InvoiceHistory() {
                   className="hover:bg-[#F1F5F9] transition-colors"
                 >
                   <td className="px-6 py-4 font-medium text-[#0F172A]">
+                    {invoice.invoice}
+                  </td>
+                  <td className="px-6 py-4">
                     <button
                       onClick={() => downloadInvoicePDF(invoice.pdfUrl)}
                       className="text-[#0F766E] hover:underline"
                     >
-                      {invoice.invoice}
+                      Download
                     </button>
-                  </td>
-                  <td className="px-6 py-4 text-[#334155]">
-                    {invoice.paymentMethod}
                   </td>
                   <td className="px-6 py-4 text-right font-semibold text-[#0F172A]">
                     ${Number(invoice.totalAmount).toFixed(2)}
