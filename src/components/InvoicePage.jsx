@@ -23,7 +23,6 @@ const initialInvoice = {
     { name: "Backend course", price: 75 },
   ],
   tax: 0,
-  note: "This invoice mirrors the provided template and stays in sync.",
 };
 
 const formatCurrency = (val) =>
@@ -31,10 +30,6 @@ const formatCurrency = (val) =>
 
 export default function InvoicePage() {
   const [invoice, setInvoice] = useState(initialInvoice);
-  const [payment, setPayment] = useState({
-    method: "check",
-    reference: "1000",
-  });
 
   const totals = useMemo(() => {
     const total =
@@ -196,17 +191,6 @@ export default function InvoicePage() {
             >
               + Add Item
             </button>
-          </div>
-
-          <div className="pt-6 border-t">
-            <input
-              className="w-full p-3 border rounded-xl text-sm"
-              placeholder="Reference #"
-              value={payment.reference}
-              onChange={(e) =>
-                setPayment({ ...payment, reference: e.target.value })
-              }
-            />
           </div>
         </div>
 
