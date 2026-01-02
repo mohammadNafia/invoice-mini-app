@@ -1,6 +1,12 @@
 import React from "react";
 
 export default function Hero() {
+  const [showButtons, setShowButtons] = React.useState(true);
+
+  const handleLoginClick = () => {
+    setShowButtons(false);
+    handleLogin();
+  };
  const handleLogin = () => {
   my.getAuthCode({
     scopes: ["auth_base", "USER_ID"],
@@ -52,12 +58,14 @@ export default function Hero() {
               </span>
             </a>
             <div className="flex items-center">
-              <button
-                onClick={handleLogin}
-                className="bg-[#0F766E] text-white rounded-full py-2 px-4 font-semibold whitespace-nowrap"
-              >
-                Login
-              </button>
+              {showButtons && (
+                <button
+                  onClick={handleLoginClick}
+                  className="bg-[#0F766E] text-white rounded-full py-2 px-4 font-semibold whitespace-nowrap"
+                >
+                  Login
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -85,20 +93,23 @@ export default function Hero() {
                   mini app
                 </p>
 
-                <div className="relative p-1.5 my-10 flex items-center gap-y-4 h-auto md:h-16 flex-col md:flex-row justify-between rounded-full border border-transparent md:bg-white transition-all duration-500 hover:border-[#7DD3FC]">
-                  <input
-                    type="text"
-                    name="email"
-                    placeholder="Enter email to get started"
-                    className="text-base rounded-full text-[#0F172A] flex-1 py-4 px-6 bg-white placeholder:text-[#334155] focus:outline-none md:w-fit w-full"
-                  />
-                  <button
-                    onClick={handleLogin}
-                    className="bg-[#5EEAD4] rounded-full py-3 px-7 text-base font-semibold text-[#334155] md:w-fit w-full"
-                  >
-                    Get started
-                  </button>
-                </div>
+                {showButtons && (
+                  <div className="relative p-1.5 my-10 flex items-center gap-y-4 h-auto md:h-16 flex-col md:flex-row justify-between rounded-full border border-transparent md:bg-white transition-all duration-500 hover:border-[#7DD3FC]">
+                    <input
+                      type="text"
+                      name="email"
+                      placeholder="Enter email to get started"
+                      className="text-base rounded-full text-[#0F172A] flex-1 py-4 px-6 bg-white placeholder:text-[#334155] focus:outline-none md:w-fit w-full"
+                    />
+
+                    <button
+                      onClick={handleLoginClick}
+                      className="bg-[#5EEAD4] rounded-full py-3 px-7 text-base font-semibold text-[#334155] md:w-fit w-full"
+                    >
+                      Get started
+                    </button>
+                  </div>
+                )}
 
                 <div className="flex items-center flex-col lg:flex-row">
                   <div className="flex items-center -space-x-5">
